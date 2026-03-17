@@ -1,7 +1,7 @@
 
   
 
-# RefVTON: person-to-person Try on with Additional Unpaired Visual Reference
+# RefTon: Reference person shot assist virtual Try-On
 
   
 
