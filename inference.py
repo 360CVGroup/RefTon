@@ -1,6 +1,9 @@
-import torch, os
-from diffusers import FluxKontextPipelineI2I
-from datasets_util.datasets_loader import viton_collate_fn
+import os
+import shutil
+
+import torch
+from refton.pipelines import FluxKontextPipelineI2I
+from train_refton_lora import viton_collate_fn
 from datasets_util.viton import VITONDataset
 from datasets_util.dresscode import DressCodeDataset
 from datasets_util.in_the_wild import MyDataset
@@ -11,9 +14,6 @@ from tqdm import tqdm
 from accelerate import Accelerator
 from torch.utils.data import DataLoader
 import torch.distributed as dist
-import os
-import shutil
-from tqdm import tqdm
 
 
 def save_tensor_as_png(tensor, filename="visualize"):
@@ -91,7 +91,7 @@ def main(args):
     pipe = FluxKontextPipelineI2I.from_pretrained(
         args.pretrained_model_name_or_path, torch_dtype=torch.bfloat16
     )
-    pipe.load_lora_weights(args.checkpoint_weight)
+    pipe.load_lora_weights(args.output_dir)
 
     pipe, dataloader = accelerator.prepare(pipe, dataloader)
     pipe.to(accelerator.device)
@@ -107,11 +107,11 @@ def main(args):
             folder_name += "_unpair"
         key_to_index_scale = {
             "cond_pixel_values_person": [1, 1],
-            "cond_pixel_values_cloth": [2, 1],
+            # "cond_pixel_values_cloth": [2, 1],
         }
         if args.use_reference:
             folder_name += "_ref"
-            key_to_index_scale["pixel_values_ref"] = [5, 1]
+            key_to_index_scale["pixel_values_ref"] = [5, args.cond_scale]
     else:
         folder_name = "sample_agnostic"
         if args.use_different:
@@ -119,11 +119,11 @@ def main(args):
 
         key_to_index_scale = {
             "cond_pixel_values_agnostic": [1, 1],
-            "cond_pixel_values_cloth": [2, 1],
+            # "cond_pixel_values_cloth": [2, 1],
         }
         if args.use_reference:
             folder_name += "_ref"
-            key_to_index_scale["pixel_values_ref"] = [5, 1]
+            key_to_index_scale["pixel_values_ref"] = [5, args.cond_scale]
 
     accelerator.wait_for_everyone()
     with torch.no_grad():

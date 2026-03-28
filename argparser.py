@@ -222,7 +222,7 @@ def parse_args(input_args=None):
         ),
     )
     parser.add_argument(
-        "--checkpoint_weight",
+        "--output_dir",
         type=str,
         default="flux-kontext-lora",
         help="The output directory where the model predictions and checkpoints will be written.",

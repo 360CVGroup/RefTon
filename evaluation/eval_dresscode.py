@@ -18,7 +18,7 @@ if __name__ == "__main__":
     torch.manual_seed(0)
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--gt_folder_base", type=str, required=True)
+    parser.add_argument("--gt_folder_base", type=str, required=True, default="/home/jovyan/liushanyuan-sh-ceph/project/sub_project/gongyue/try-on/datasets/DressCode_gt_test")
     parser.add_argument("--pred_folder_base", type=str, required=True)
     parser.add_argument("--paired", action="store_true")
     parser.add_argument("--batch_size", type=int, default=64)

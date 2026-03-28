@@ -21,8 +21,7 @@ cycler==0.12.1
 dataset==1.6.2
 datasets==3.6.0
 deepspeed==0.17.5
-diffuser==0.0.1
-# Editable Git install with no remote (diffusers==0.35.0.dev0)
+diffusers>=0.35.0
 dill==0.3.8
 einops==0.8.1
 filelock==3.18.0
