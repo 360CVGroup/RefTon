@@ -8,10 +8,9 @@
 `RefTon` is a FLUX-Kontext-based virtual try-on framework that conditions on the target garment together with an optional reference person image. The core idea is simple: a flat garment image alone often misses important wearing cues such as drape, texture response, translucency, and how details look on a real body. By adding a reference image of another person wearing the same garment, `RefTon` preserves garment identity more faithfully and produces more stable try-on results in both benchmark and in-the-wild scenarios.
 
 ## 💡 Updates
-- Accepted by CVPR 2026.
 - [2025.10.11] Release inference code and LoRA weights on [Hugging Face](https://huggingface.co/qihoo360/RefVTON).
 - [2025.10.13] Release the technical report on [arXiv](https://arxiv.org/abs/2511.00956).
-- [2025.2.21] **Our RefTon is accepted by CVPR 2026🎉**
+- [2025.2.21] **Our RefTon is accepted by CVPR 2026 🎉🎉🎉**
 - [2026.3.28] Release the training code and [VRF datasets](https://huggingface.co/qihoo360).
 
 ## 💪 Why RefTon
@@ -79,7 +78,7 @@ Notes:
 
 One of the main advantages of `RefTon` is the use of a person image showing the target person wearing a different garment, together with a reference image showing the target garment on another body. Public try-on datasets such as VITON-HD and DressCode do not provide this signal by default, so we supplement these benchmarks with our generated person and reference images. You can download our `VRF` data from [Hugging Face](https://huggingface.co/qihoo360).
 
-For the [DressCode](https://github.com/aimagelab/dress-code) dataset, we currently provide only the processed images, such as refined agnostic, person, and reference images. Due to copyright restrictions, the original dataset is not redistributed in this repository. For the [VITON-HD](https://github.com/shadow2496/VITON-HD), [DressCode](https://github.com/aimagelab/dress-code), [IGPairs](https://huggingface.co/datasets/IMAGDressing/IGPair), [ViViD](https://becauseimbatman0.github.io/ViViD), and [FashionTryon](https://fashiontryon.wixsite.com/fashiontryon) datasets, we provide only the necessary subsets, such as target, cloth, and agnostic images, and remove unused annotations such as masks and DensePose files. Please obtain the original data from the official dataset sources listed in the acknowledgement section.
+For the [DressCode](https://github.com/aimagelab/dress-code) dataset, we currently provide only the processed images, such as refined agnostic, person, and reference images. Due to copyright restrictions, the original dataset is not redistributed in this repository. For the [VITON-HD](https://github.com/shadow2496/VITON-HD), [IGPairs](https://huggingface.co/datasets/IMAGDressing/IGPair), [ViViD](https://becauseimbatman0.github.io/ViViD), and [FashionTryon](https://fashiontryon.wixsite.com/fashiontryon) datasets, we provide only the necessary subsets, such as target, cloth, and agnostic images, and remove unused annotations such as masks and DensePose files. For the [DressCode](https://github.com/aimagelab/dress-code) dataset, we provide only the processed subsets, such as person, reference, and refined agnostic images, and exclude the unprocessed subsets, including cloth, target, mask, and others. Please obtain the original data from the official dataset sources listed in the acknowledgement section.
 
 Please download the pretrained LoRA weights for inference from [![Hugging Face](https://img.shields.io/badge/Hugging%20Face-RefTon-ff9900?style=flat)](https://huggingface.co/qihoo360/RefVTON).
 
@@ -146,7 +145,7 @@ CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 accelerate launch --num_processes 8 --main_
   --seed 0 \
   --use_reference \
   --use_person \
-  --use_different
+  # --use_different
 ```
 
 Recommend using `cond_scale=1.0` for `512x384` inference and `2.0` for `1024x768` inference. `--use_different` is optional and is mainly used for evaluation in unpaired settings.
@@ -155,7 +154,7 @@ What each flag does:
 - `--output_dir`: path to the LoRA weights to load during inference.
 - `--use_reference`: enables the reference person image branch.
 - `--use_person`: uses the full person image as the try-on base.
-- `--use_different`: uses unpaired cloth-person combinations. This is mainly for VITON-HD and DressCode evaluation.
+- `--use_different`: uses unpaired cloth-person combinations. This is mainly for VITON-HD and DressCode evaluation. Default: false.
 
 Output locations:
 - Results are saved under `<instance_data_dir>/sample_*`.
@@ -201,7 +200,7 @@ Evaluation results on the three DressCode subsets:
 ![dresscode_subset](assets/dresscode_subset.png)
 
 ## 🌸 Acknowledgement
-This codebase is built on top of [diffusers](https://github.com/huggingface/diffusers/tree/main), [FLUX](https://github.com/huggingface/diffusers/tree/main/src/diffusers/pipelines/flux), and [CatVTON](https://github.com/Zheng-Chong/CatVTON/). We sincerely thank the authors for their excellent open-source work. The dataset construction also builds on [VITON-HD](https://github.com/shadow2496/VITON-HD), [DressCode](https://github.com/aimagelab/dress-code), [IGPairs](https://huggingface.co/datasets/IMAGDressing/IGPair), [ViViD](https://becauseimbatman0.github.io/ViViD), and [FashionTryon](https://fashiontryon.wixsite.com/fashiontryon), and we sincerely appreciate their contributions to the virtual try-on community.
+This codebase is built on top of [diffusers](https://github.com/huggingface/diffusers/tree/main), [FLUX](https://github.com/huggingface/diffusers/tree/main/src/diffusers/pipelines/flux), and [CatVTON](https://github.com/Zheng-Chong/CatVTON/), and the dataset construction also builds on [VITON-HD](https://github.com/shadow2496/VITON-HD), [DressCode](https://github.com/aimagelab/dress-code), [IGPairs](https://huggingface.co/datasets/IMAGDressing/IGPair), [ViViD](https://becauseimbatman0.github.io/ViViD), and [FashionTryon](https://fashiontryon.wixsite.com/fashiontryon). We sincerely appreciate their contributions to the virtual try-on community!
 
 ## 💖 Citation
 If you find this repository useful, please consider citing our paper: [![arXiv](https://img.shields.io/badge/arXiv-2511.00956-B31B1B?style=flat)](https://arxiv.org/abs/2511.00956).
